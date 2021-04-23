@@ -2,7 +2,7 @@ defmodule DirectoryAnalyzerWeb.DirectoryView do
   use DirectoryAnalyzerWeb, :view
 
   @list ["lorem", "recipes", "the_living_mummy"]
-  def directoryist(directories) when length(directories) === 0, do: @list
+  def directory_list(directories) when length(directories) === 0, do: @list
 
   def directory_list(directories) do
     directories =
