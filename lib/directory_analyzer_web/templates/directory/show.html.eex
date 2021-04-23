@@ -1,0 +1,23 @@
+<h1>Show Directory</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @directory.name %>
+  </li>
+
+  <li>
+    <strong>Word count:</strong>
+    <%= @directory.word_count %>
+  </li>
+
+  <li>
+    <strong>File count:</strong>
+    <%= @directory.file_count %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.directory_path(@conn, :edit, @directory) %></span>
+<span><%= link "Back", to: Routes.directory_path(@conn, :index) %></span>

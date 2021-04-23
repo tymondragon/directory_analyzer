@@ -16,6 +16,7 @@ defmodule DirectoryAnalyzerWeb.Router do
   scope "/", DirectoryAnalyzerWeb do
     pipe_through :browser
 
+    resources "/directories", DirectoryController
   end
 
   # Other scopes may use custom stacks.
