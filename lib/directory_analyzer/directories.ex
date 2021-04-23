@@ -72,6 +72,18 @@ defmodule DirectoryAnalyzer.Directories do
     Repo.delete(directory)
   end
 
+  @doc """
+  Generates a word count for all .txt files within a directory.
+
+  ## Examples
+
+      iex> process_directory(name)
+      {:ok, %Directory{}}
+
+      iex> process_directory(name)
+      {:error, :file.format_error(reason)}
+
+  """
   def process_directory(name) do
     IO.inspect(name, label: "LABEL LABEL LABALE")
   end
