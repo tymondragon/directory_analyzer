@@ -42,7 +42,10 @@ defmodule DirectoryAnalyzer.DirectoriesTest do
 
     test "update_directory/2 with valid data updates the directory" do
       directory = directory_fixture()
-      assert {:ok, %Directory{} = directory} = Directories.update_directory(directory, @update_attrs)
+
+      assert {:ok, %Directory{} = directory} =
+               Directories.update_directory(directory, @update_attrs)
+
       assert directory.file_count == 43
       assert directory.name == "some updated name"
       assert directory.word_count == 43

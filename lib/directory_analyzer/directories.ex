@@ -50,10 +50,6 @@ defmodule DirectoryAnalyzer.Directories do
 
   """
 
-  def process_directory(name) do
-    IO.inspect(name, label: "LABEL LABEL LABALE")
-  end
-
   def create_directory(attrs \\ %{}) do
     %Directory{}
     |> Directory.changeset(attrs)
@@ -61,49 +57,22 @@ defmodule DirectoryAnalyzer.Directories do
   end
 
   @doc """
-  Updates a directory.
-
-  ## Examples
-
-      iex> update_directory(directory, %{field: new_value})
-      {:ok, %Directory{}}
-
-      iex> update_directory(directory, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_directory(%Directory{} = directory, attrs) do
-    directory
-    |> Directory.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
   Deletes a directory.
 
   ## Examples
 
-      iex> delete_directory(directory)
-      {:ok, %Directory{}}
+  iex> delete_directory(directory)
+  {:ok, %Directory{}}
 
-      iex> delete_directory(directory)
-      {:error, %Ecto.Changeset{}}
+  iex> delete_directory(directory)
+  {:error, %Ecto.Changeset{}}
 
   """
   def delete_directory(%Directory{} = directory) do
     Repo.delete(directory)
   end
 
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking directory changes.
-
-  ## Examples
-
-      iex> change_directory(directory)
-      %Ecto.Changeset{data: %Directory{}}
-
-  """
-  def change_directory(%Directory{} = directory, attrs \\ %{}) do
-    Directory.changeset(directory, attrs)
+  def process_directory(name) do
+    IO.inspect(name, label: "LABEL LABEL LABALE")
   end
 end

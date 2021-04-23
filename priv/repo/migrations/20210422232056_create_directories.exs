@@ -9,6 +9,5 @@ defmodule DirectoryAnalyzer.Repo.Migrations.CreateDirectories do
 
       timestamps()
     end
-
   end
 end

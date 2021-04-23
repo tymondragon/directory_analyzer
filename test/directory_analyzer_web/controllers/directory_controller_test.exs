@@ -75,6 +75,7 @@ defmodule DirectoryAnalyzerWeb.DirectoryControllerTest do
     test "deletes chosen directory", %{conn: conn, directory: directory} do
       conn = delete(conn, Routes.directory_path(conn, :delete, directory))
       assert redirected_to(conn) == Routes.directory_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.directory_path(conn, :show, directory))
       end

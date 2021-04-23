@@ -16,6 +16,7 @@ defmodule DirectoryAnalyzerWeb.DirectoryController do
     |> IO.inspect()
     |> put_flash(:info, "Directory analyzed successfully.")
     |> redirect(to: Routes.directory_path(conn, :index))
+
     # case Directories.create_directory(data) do
     #   {:ok, directory} ->
     #     conn
