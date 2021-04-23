@@ -85,6 +85,43 @@ defmodule DirectoryAnalyzer.Directories do
 
   """
   def process_directory(name) do
-    IO.inspect(name, label: "LABEL LABEL LABALE")
+    list_files(name)
+    |> Enum.map(fn file ->
+      process_file(file)
+    end)
+    |> List.flatten()
+
+    # get absolute path name for directory
+    # find all txt files within directory <--- safe to say that it will ignore any non text file.
+    # drop any file that is empty
+    # loop over each file and read the file.
+    # With result of each file ----- (TODO: look below)
+    # reduce to dir_map of %{total_words: total_words + length(file) words: %{word: count}}
+    # put file_count to dir_map -> %{total_words: integer, words: %{word: count}, file_count: length(files)}
+
+    # TODO
+    # sanitize files
+    # remove special characters
+    # remove integers
+    # extra spaces, carriages, new lines
+  end
+
+  defp list_files(name) do
+    # -- get absolute path name for directory
+    # -- find all txt files within directory <--- safe to say that it will ignore any non text file.
+    Path.absname("documents/#{name}")
+    |> Kernel.<>("/*.txt")
+    |> Path.wildcard()
+  end
+
+  def process_file(file) do
+    # TODO fix last map to handle ignore only all caps I's
+    file
+    |> File.stream!()
+    |> Enum.map(&String.replace(&1, ~r/([[:punct:]]|[[:digit:]])/, ""))
+    |> Enum.map(&Regex.replace(~r/\b(?:(?!I)\w)+\b/, &1, fn a, _ -> String.downcase(a) end))
+    |> Enum.filter(fn s -> s !== "\n" end)
+    |> Enum.map(&String.replace(&1, ~r/(\n+)/, ""))
+    |> Enum.map(&String.split/1)
   end
 end
