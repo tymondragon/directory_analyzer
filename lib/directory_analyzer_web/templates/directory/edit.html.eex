@@ -1,5 +1,0 @@
-<h1>Edit Directory</h1>
-
-<%= render "form.html", Map.put(assigns, :action, Routes.directory_path(@conn, :update, @directory)) %>
-
-<span><%= link "Back", to: Routes.directory_path(@conn, :index) %></span>

@@ -19,5 +19,6 @@
 
 </ul>
 
-<span><%= link "Edit", to: Routes.directory_path(@conn, :edit, @directory) %></span>
-<span><%= link "Back", to: Routes.directory_path(@conn, :index) %></span>
+<span>
+  <%= link "Back", to: Routes.directory_path(@conn, :index) %>
+</span>
