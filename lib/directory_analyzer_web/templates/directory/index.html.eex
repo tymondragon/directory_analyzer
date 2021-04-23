@@ -19,7 +19,6 @@
 
       <td>
         <span><%= link "Show", to: Routes.directory_path(@conn, :show, directory) %></span>
-        <span><%= link "Edit", to: Routes.directory_path(@conn, :edit, directory) %></span>
         <span><%= link "Delete", to: Routes.directory_path(@conn, :delete, directory), method: :delete, data: [confirm: "Are you sure?"] %></span>
       </td>
     </tr>
@@ -30,7 +29,7 @@
 <span>
 <% filtered_list = directory_list(@directories) %>
 <%= for name <- filtered_list do %>
-<%= link String.capitalize(name), to: Routes.directory_path(@conn, :new) %>
+<%= link String.capitalize(name), to: Routes.directory_path(@conn, :process, %{directory_name: name}), method: :post %>
 <% end %>
 
 </span>

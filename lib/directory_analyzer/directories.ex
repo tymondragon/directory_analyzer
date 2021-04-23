@@ -49,6 +49,11 @@ defmodule DirectoryAnalyzer.Directories do
       {:error, %Ecto.Changeset{}}
 
   """
+
+  def process_directory(name) do
+    IO.inspect(name, label: "LABEL LABEL LABALE")
+  end
+
   def create_directory(attrs \\ %{}) do
     %Directory{}
     |> Directory.changeset(attrs)
