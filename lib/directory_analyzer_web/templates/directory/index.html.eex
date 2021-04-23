@@ -27,4 +27,10 @@
   </tbody>
 </table>
 
-<span><%= link "New Directory", to: Routes.directory_path(@conn, :new) %></span>
+<span>
+<% filtered_list = directory_list(@directories) %>
+<%= for name <- filtered_list do %>
+<%= link String.capitalize(name), to: Routes.directory_path(@conn, :new) %>
+<% end %>
+
+</span>
