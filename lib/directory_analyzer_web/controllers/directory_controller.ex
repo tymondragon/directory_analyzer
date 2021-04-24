@@ -9,22 +9,28 @@ defmodule DirectoryAnalyzerWeb.DirectoryController do
   end
 
   def process(conn, %{"directory_name" => name}) do
-    name
-    |> Directories.process_directory()
+    evaluated_directory =
+      case Directories.evaluate_directory(name) do
+        {:ok, directory_results} ->
+          directory_results
 
-    conn
-    |> put_flash(:info, "Directory analyzed successfully.")
-    |> redirect(to: Routes.directory_path(conn, :index))
+        {:error, reason} ->
+          conn
+          |> put_flash(:error, reason)
+          |> redirect(to: Routes.directory_path(conn, :index))
+      end
 
-    # case Directories.create_directory(data) do
-    #   {:ok, directory} ->
-    #     conn
-    #     |> put_flash(:info, "Analysis of #{directory.name} completed.")
-    #     |> redirect(to: Routes.directory_path(conn, :show, directory))
+    case Directories.create_directory(evaluated_directory) do
+      {:ok, directory} ->
+        conn
+        |> put_flash(:info, "Analysis of #{directory.name} completed.")
+        |> redirect(to: Routes.directory_path(conn, :show, directory))
 
-    #   {:error, %Ecto.Changeset{} = changeset} ->
-    #     render(conn, "new.html", changeset: changeset)
-    # end
+      {:error, %Ecto.Changeset{}} ->
+        conn
+        |> put_flash(:info, "Directory failed to analyze.")
+        |> redirect(to: Routes.directory_path(conn, :index))
+    end
   end
 
   def show(conn, %{"id" => id}) do

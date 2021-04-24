@@ -73,20 +73,44 @@ defmodule DirectoryAnalyzer.Directories do
   end
 
   @doc """
-  Generates a word count for all .txt files within a directory.
-
+  Evaluates directory for word count stats
   ## Examples
 
-      iex> process_directory(name)
-      {:ok, %Directory{}}
+      iex> evaluate_directory(name)
+      {:ok, %{name: name, word_count: word_count, file_count: file_count, name: name}}
 
-      iex> process_directory(name)
-      {:error, :file.format_error(reason)}
+      iex> evaluate_directory(name)
+      {:error, message}
 
   """
-  def process_directory(name) do
-    files = list_files(name)
+  def evaluate_directory(name) do
+    case list_files(name) do
+      {:ok, files} ->
+        process_directory(name, files)
 
+      {:error, message} ->
+        {:error, message}
+    end
+  end
+
+  defp list_files(name) do
+    # -- get absolute path name for directory
+    # -- find all txt files within directory <--- safe to say that it will ignore any non text file.
+    files =
+      Path.absname("documents/#{name}")
+      |> Kernel.<>("/*.txt")
+      |> Path.wildcard()
+
+    case length(files) do
+      0 ->
+        {:error, "There are no .txt files in this directory"}
+
+      _ ->
+        {:ok, files}
+    end
+  end
+
+  defp process_directory(name, files) do
     result =
       files
       |> Enum.map(fn file ->
@@ -100,40 +124,17 @@ defmodule DirectoryAnalyzer.Directories do
 
         %{acc | word_count: word_count + 1, words: words}
       end)
-      |> Map.merge(%{file_count: length(files)})
+      |> Map.merge(%{file_count: length(files), name: name})
 
-      # STILL NEED TO FIGURE OUT HOW TO SELECT TOP TEN WORDS IN THE LIST
-      for {key, val} <- result.words,
-        into: %{},
-        do:
-          {String.to_atom(key), val}
-          |> IO.inspect()
+    # sorting by count is working, yet both count and word are descending so the ordering on the words is reverse alphabetized.
+    top_ten_words =
+      Enum.sort_by(result.words, fn {word, count} -> {count, word} end, &>=/2)
+      |> Enum.slice(0..9)
 
-
-    # get absolute path name for directory
-    # find all txt files within directory <--- safe to say that it will ignore any non text file.
-    # drop any file that is empty
-    # loop over each file and read the file.
-    # With result of each file ----- (TODO: look below)
-    # reduce to dir_map of %{total_words: total_words + length(file) words: %{word: count}}
-    # put file_count to dir_map -> %{total_words: integer, words: %{word: count}, file_count: length(files)}
-
-    # TODO
-    # sanitize files
-    # remove special characters
-    # remove integers
-    # extra spaces, carriages, new lines
+    {:ok, %{result | words: top_ten_words}}
   end
 
-  defp list_files(name) do
-    # -- get absolute path name for directory
-    # -- find all txt files within directory <--- safe to say that it will ignore any non text file.
-    Path.absname("documents/#{name}")
-    |> Kernel.<>("/*.txt")
-    |> Path.wildcard()
-  end
-
-  def process_file(file) do
+  defp process_file(file) do
     # TODO fix last map to handle ignore only all caps I's
     file
     |> File.stream!()
