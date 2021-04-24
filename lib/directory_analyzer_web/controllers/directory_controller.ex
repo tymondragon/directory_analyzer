@@ -25,10 +25,10 @@ defmodule DirectoryAnalyzerWeb.DirectoryController do
         conn
         |> put_flash(:info, "Analysis of #{directory.name} completed.")
         |> redirect(to: Routes.directory_path(conn, :show, directory))
-
-      {:error, %Ecto.Changeset{}} ->
+      # Doesn't hit the error since the list of directories filters out already processed ones.
+      {:error, %Ecto.Changeset{} = %{changes: changes}} ->
         conn
-        |> put_flash(:info, "Directory failed to analyze.")
+        |> put_flash(:error, changes[:name] <> " " <> "has already been processed")
         |> redirect(to: Routes.directory_path(conn, :index))
     end
   end

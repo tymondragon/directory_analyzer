@@ -15,5 +15,6 @@ defmodule DirectoryAnalyzer.Directories.Directory do
     directory
     |> cast(attrs, [:name, :word_count, :file_count])
     |> validate_required([:name, :word_count, :file_count])
+    |> unique_constraint(:name)
   end
 end

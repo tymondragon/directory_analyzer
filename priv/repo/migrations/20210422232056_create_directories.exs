@@ -9,5 +9,7 @@ defmodule DirectoryAnalyzer.Repo.Migrations.CreateDirectories do
 
       timestamps()
     end
+
+    create unique_index(:directories, [:name])
   end
 end
