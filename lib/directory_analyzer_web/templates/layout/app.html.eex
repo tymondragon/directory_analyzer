@@ -11,7 +11,7 @@
   <body>
     <header>
       <section class="container">
-        <h1>Directory Word Count Processor</h1>
+        <h1>Word Count Processor</h1>
       </section>
     </header>
     <main role="main" class="container">
