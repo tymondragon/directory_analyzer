@@ -8,7 +8,7 @@ defmodule DirectoryAnalyzerWeb.DirectoryController do
     render(conn, "index.html", directories: directories)
   end
 
-  def process(conn, %{"directory_name" => name}) do
+  def process(conn, %{"dir_name" => name}) do
     evaluated_directory =
       case Directories.evaluate_directory(name) do
         {:ok, directory_results} ->

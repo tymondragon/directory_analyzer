@@ -28,8 +28,12 @@
 
 <span>
 <% filtered_list = directory_list(@directories) %>
-<%= for name <- filtered_list do %>
-<%= link String.capitalize(name), to: Routes.directory_path(@conn, :process, %{directory_name: name}), method: :post %>
+<%= for folder <- filtered_list do %>
+<ul>
+<li>
+<%= link folder.display_name, to: Routes.directory_path(@conn, :process, folder), method: :post %>
+</li>
+</ul>
 <% end %>
 
 </span>
