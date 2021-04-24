@@ -13,7 +13,6 @@ defmodule DirectoryAnalyzerWeb.DirectoryController do
     |> Directories.process_directory()
 
     conn
-    |> IO.inspect()
     |> put_flash(:info, "Directory analyzed successfully.")
     |> redirect(to: Routes.directory_path(conn, :index))
 

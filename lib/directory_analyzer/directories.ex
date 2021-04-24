@@ -85,11 +85,30 @@ defmodule DirectoryAnalyzer.Directories do
 
   """
   def process_directory(name) do
-    list_files(name)
-    |> Enum.map(fn file ->
-      process_file(file)
-    end)
-    |> List.flatten()
+    files = list_files(name)
+
+    result =
+      files
+      |> Enum.map(fn file ->
+        process_file(file)
+      end)
+      |> List.flatten()
+      |> Enum.reduce(%{word_count: 0, words: %{}}, fn word,
+                                                      %{word_count: word_count, words: words} =
+                                                        acc ->
+        words = Map.update(words, word, 1, fn existing_value -> existing_value + 1 end)
+
+        %{acc | word_count: word_count + 1, words: words}
+      end)
+      |> Map.merge(%{file_count: length(files)})
+
+      # STILL NEED TO FIGURE OUT HOW TO SELECT TOP TEN WORDS IN THE LIST
+      for {key, val} <- result.words,
+        into: %{},
+        do:
+          {String.to_atom(key), val}
+          |> IO.inspect()
+
 
     # get absolute path name for directory
     # find all txt files within directory <--- safe to say that it will ignore any non text file.
