@@ -7,7 +7,6 @@ defmodule DirectoryAnalyzer.Words.Word do
   schema "words" do
     field :word, :string
     field :count, :integer
-    field :word_count, :integer
 
     belongs_to :directory, Directory
 
