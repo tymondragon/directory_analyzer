@@ -9,7 +9,7 @@ defmodule DirectoryAnalyzer.Directories.Directory do
     field :name, :string
     field :word_count, :integer
 
-    has_many :words, Word
+    has_many :top_ten_words, Word
 
     timestamps()
   end
