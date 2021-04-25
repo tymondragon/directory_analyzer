@@ -21,14 +21,22 @@ defmodule DirectoryAnalyzerWeb.DirectoryController do
       end
 
     case Directories.create_directory(evaluated_directory) do
-      {:ok, directory} ->
+      {:ok, %{directory: directory}} ->
         conn
         |> put_flash(:info, "Analysis of #{directory.name} completed.")
         |> redirect(to: Routes.directory_path(conn, :show, directory))
+
       # Doesn't hit the error since the list of directories filters out already processed ones.
       {:error, %Ecto.Changeset{} = %{changes: changes}} ->
         conn
         |> put_flash(:error, changes[:name] <> " " <> "has already been processed")
+        |> redirect(to: Routes.directory_path(conn, :index))
+
+      {:error, _failed_operation, errors, _changes_so_far} ->
+        IO.inspect(errors)
+
+        conn
+        |> put_flash(:error, "We reaaaaally are not sure what's happened?")
         |> redirect(to: Routes.directory_path(conn, :index))
     end
   end

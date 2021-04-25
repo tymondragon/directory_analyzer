@@ -4,9 +4,13 @@ defmodule DirectoryAnalyzer.Directories do
   """
 
   import Ecto.Query, warn: false
+
+  alias Ecto.Multi
   alias DirectoryAnalyzer.Repo
 
   alias DirectoryAnalyzer.Directories.Directory
+  alias DirectoryAnalyzer.Words
+  alias DirectoryAnalyzer.Words.Word
 
   @doc """
   Returns the list of directories.
@@ -38,7 +42,7 @@ defmodule DirectoryAnalyzer.Directories do
   def get_directory!(id), do: Repo.get!(Directory, id)
 
   @doc """
-  Creates a directory.
+  Runs a transaction: creating a directory, inserting top 10 words
 
   ## Examples
 
@@ -51,9 +55,17 @@ defmodule DirectoryAnalyzer.Directories do
   """
 
   def create_directory(attrs \\ %{}) do
-    %Directory{}
-    |> Directory.changeset(attrs)
-    |> Repo.insert()
+    Multi.new()
+    |> Multi.insert(:directory, Directory.changeset(%Directory{}, attrs))
+    |> Multi.run(:top_ten_words, fn _, %{directory: directory} ->
+      now = NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)
+      top_ten_words =
+        attrs[:words]
+        |> Enum.map(fn {word, count} -> %{word: word, count: count, directory_id: directory.id, inserted_at: now, updated_at: now} end)
+
+      Words.insert_top_ten_words(top_ten_words)
+    end)
+    |> Repo.transaction()
   end
 
   @doc """
@@ -77,7 +89,7 @@ defmodule DirectoryAnalyzer.Directories do
   ## Examples
 
       iex> evaluate_directory(name)
-      {:ok, %{name: name, word_count: word_count, file_count: file_count, name: name}}
+      {:ok, %{name: name, word_count: word_count, file_count: file_count, words: [%{hello: 5}, %{}]}}
 
       iex> evaluate_directory(name)
       {:error, message}
