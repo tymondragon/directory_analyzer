@@ -42,14 +42,14 @@ defmodule DirectoryAnalyzer.Directories do
   def get_directory!(id) do
     top_ten_words_query =
       Word
-      |> order_by([w], [desc: w.count, asc: w.word])
+      |> order_by([w], desc: w.count, asc: w.word)
 
     Directory
     |> where([d], d.id == ^id)
-    |> preload([_], [top_ten_words: ^top_ten_words_query])
+    |> preload([_], top_ten_words: ^top_ten_words_query)
     |> Repo.one()
   end
-  
+
   @doc """
   Runs a transaction: creating a directory, inserting top 10 words
 
@@ -68,9 +68,18 @@ defmodule DirectoryAnalyzer.Directories do
     |> Multi.insert(:directory, Directory.changeset(%Directory{}, attrs))
     |> Multi.run(:top_ten_words, fn _, %{directory: directory} ->
       now = NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)
+
       top_ten_words =
         attrs[:words]
-        |> Enum.map(fn {word, count} -> %{word: word, count: count, directory_id: directory.id, inserted_at: now, updated_at: now} end)
+        |> Enum.map(fn {word, count} ->
+          %{
+            word: word,
+            count: count,
+            directory_id: directory.id,
+            inserted_at: now,
+            updated_at: now
+          }
+        end)
 
       Words.insert_top_ten_words(top_ten_words)
     end)
