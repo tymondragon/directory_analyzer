@@ -1,14 +1,8 @@
-<h2>Directory</h2>
+<h2>Directory: <%= @directory.name %></h2>
 
 <ul>
-
   <li>
-    <strong>Name:</strong>
-    <%= @directory.name %>
-  </li>
-
-  <li>
-    <strong>Word count:</strong>
+    <strong>Total Word count:</strong>
     <%= @directory.word_count %>
   </li>
 
@@ -17,6 +11,19 @@
     <%= @directory.file_count %>
   </li>
 
+  <li>
+    <strong>
+      Top Ten Most Used Words:
+    </strong>
+    <ul>
+      <ol>
+        <%= for word <- @directory.top_ten_words do %>
+        <li>
+          <i><%= word.word %></i>: <span><%= word.count %></span>
+        <% end %>
+      </ol>
+    </ul>
+  </li>
 </ul>
 
 <span>

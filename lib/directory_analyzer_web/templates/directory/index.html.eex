@@ -28,6 +28,9 @@
 
 <span>
 <% filtered_list = directory_list(@directories) %>
+<%= if length(filtered_list) > 0 do %>
+  <h5>Select a directory to analyze</h5>
+<% end %>
 <%= for folder <- filtered_list do %>
 <ul>
 <li>

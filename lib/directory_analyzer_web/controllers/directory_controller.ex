@@ -32,9 +32,7 @@ defmodule DirectoryAnalyzerWeb.DirectoryController do
         |> put_flash(:error, changes[:name] <> " " <> "has already been processed")
         |> redirect(to: Routes.directory_path(conn, :index))
 
-      {:error, _failed_operation, errors, _changes_so_far} ->
-        IO.inspect(errors)
-
+      {:error, _failed_operation, _errors, _changes_so_far} ->
         conn
         |> put_flash(:error, "We reaaaaally are not sure what's happened?")
         |> redirect(to: Routes.directory_path(conn, :index))
