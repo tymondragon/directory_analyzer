@@ -26,7 +26,7 @@ defmodule DirectoryAnalyzer.Directories do
   end
 
   @doc """
-  Gets a single directory.
+  Gets a single directory and it's 10 most used words.
 
   Raises `Ecto.NoResultsError` if the Directory does not exist.
 
@@ -39,8 +39,17 @@ defmodule DirectoryAnalyzer.Directories do
       ** (Ecto.NoResultsError)
 
   """
-  def get_directory!(id), do: Repo.get!(Directory, id)
+  def get_directory!(id) do
+    top_ten_words_query =
+      Word
+      |> order_by([w], [desc: w.count, asc: w.word])
 
+    Directory
+    |> where([d], d.id == ^id)
+    |> preload([_], [top_ten_words: ^top_ten_words_query])
+    |> Repo.one()
+  end
+  
   @doc """
   Runs a transaction: creating a directory, inserting top 10 words
 
