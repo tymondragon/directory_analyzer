@@ -58,7 +58,7 @@ $ docker-compose run app mix ecto.setup
 
 ### Start Container
 ```sh
-$ docker-compose build
+$ docker-compose up
 ```
 
 The app  will be running on
