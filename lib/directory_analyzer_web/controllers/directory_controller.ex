@@ -45,6 +45,7 @@ defmodule DirectoryAnalyzerWeb.DirectoryController do
         conn
         |> put_flash(:error, "Directory Not Found")
         |> redirect(to: Routes.directory_path(conn, :index))
+
       directory ->
         render(conn, "show.html", directory: directory)
     end
