@@ -26,7 +26,7 @@ defmodule DirectoryAnalyzerWeb.DirectoryController do
         |> put_flash(:info, "Analysis of #{directory.name} completed.")
         |> redirect(to: Routes.directory_path(conn, :show, directory))
 
-      # Doesn't hit the error since the list of directories filters out already processed ones.
+      # Probably won't hit the error since the list of directories filters out already processed ones.
       {:error, %Ecto.Changeset{} = %{changes: changes}} ->
         conn
         |> put_flash(:error, changes[:name] <> " " <> "has already been processed")
@@ -40,8 +40,14 @@ defmodule DirectoryAnalyzerWeb.DirectoryController do
   end
 
   def show(conn, %{"id" => id}) do
-    directory = Directories.get_directory!(id)
-    render(conn, "show.html", directory: directory)
+    case Directories.get_directory!(id) do
+      nil ->
+        conn
+        |> put_flash(:error, "Directory Not Found")
+        |> redirect(to: Routes.directory_path(conn, :index))
+      directory ->
+        render(conn, "show.html", directory: directory)
+    end
   end
 
   def delete(conn, %{"id" => id}) do

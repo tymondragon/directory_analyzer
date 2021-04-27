@@ -3,7 +3,7 @@ defmodule DirectoryAnalyzer.Repo do
     otp_app: :directory_analyzer,
     adapter: Ecto.Adapters.Postgres
 
-def init(_, opts) do
+  def init(_, opts) do
     {:ok, opts}
   end
 end

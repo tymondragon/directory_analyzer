@@ -17,7 +17,7 @@ defmodule DirectoryAnalyzerWeb.Router do
     pipe_through :browser
 
     get "/", HomeController, :index
-    
+
     resources "/directories", DirectoryController, only: [:index, :show, :delete]
     post("/directories", DirectoryController, :process)
   end
