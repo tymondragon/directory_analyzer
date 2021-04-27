@@ -1,8 +1,8 @@
 # Directory Analyzer
 
 ### MVP
-This is an application to find and count all words within any .txt files within a specific directory. 
-The total count of words, as well as the top ten used words will be stored for later viewing. 
+This is an application to find and count all words within any .txt files within a specific directory.\
+The total count of words, as well as the top ten used words will be stored for later viewing.\
 I chose to use Elixir/Phoenix framework to build the application with PostgreSQL database with Docker/Docker-Compose.
 
 ### New technology:
