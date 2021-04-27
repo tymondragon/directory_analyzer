@@ -40,7 +40,7 @@ instructions for compose
 Clone the repo to your local machine:
 
 ```sh
-$ git@github.com:tymondragon/directory_word_processor.git
+$ git clone git@github.com:tymondragon/directory_word_processor.git
 ```
 
 ### Running in Development:
