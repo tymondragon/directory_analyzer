@@ -6,9 +6,10 @@ The total count of words, as well as the top ten used words will be stored for l
 I chose to use Elixir/Phoenix framework to build the application with PostgreSQL database with Docker/Docker-Compose.
 
 ### New technology:
-Even though I have experience working with Elixir/Phoenix, I had not worked with its templating and markup.
-Along this same line, I have worked with Docker, but never have implemented the code to build a Docker image or provision multiple containers.
+Even though I have experience working with Elixir/Phoenix, I had not worked with its templating and markup.\
+Along this same line, I have worked with Docker, but never have implemented the code to build a Docker image or provision multiple containers.\
 I wanted to challenge myself to learn something new while building this application!!
+
 ### If I were building this application for production:
   - The code currently selects the top 10 to insert by word count and word descending. I would rather it order by count desc, word asc but wanted to make sure I had time to provide MVP before refactoring code.
     - The assessment stated: "storing the top 10 words." Most of my experience had been inserting all the words in a directory then retrieving only the top ten from the database. That would be less overhead ordering by count desc, word asc.
