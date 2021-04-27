@@ -1,11 +1,9 @@
 use Mix.Config
+database_url = System.get_env("DATABASE_URL") || "postgresql://localhost/api_#{Mix.env()}"
 
 # Configure your database
 config :directory_analyzer, DirectoryAnalyzer.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "directory_analyzer_dev",
-  hostname: "localhost",
+  url: database_url,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
